@@ -1,6 +1,7 @@
 html, body
 {
 	height:100%;
+	background-color:#f2f2f2;
 }
 
 .main
@@ -8,9 +9,24 @@ html, body
 	text-align:center;
 }
 
-img
+.bordernone
 {
-	height:201px;
+	border:none;
+}
+
+.button
+{
+	appearance:button;
+	background-color:#4caf50;
+	color:#ffffff;
+}
+
+.button2
+{
+	padding:5px;
+	appearance:button;
+	background-color:#4caf50;
+	color:#ffffff;
 }
 
 .inher
