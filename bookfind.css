@@ -1,0 +1,19 @@
+html, body
+{
+	height:100%;
+}
+
+.main
+{
+	text-align:center;
+}
+
+img
+{
+	height:201px;
+}
+
+.inher
+{
+	height:auto;
+}
