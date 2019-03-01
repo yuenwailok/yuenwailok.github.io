@@ -3,8 +3,6 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -45,7 +43,7 @@ var GoogleBook = function (_React$Component) {
         key: "authorsList",
         value: function authorsList(authors) {
             if (authors === undefined) {
-                return "";
+                return "No authors found";
             } else {
                 return "By: " + authors.join(", ");
             }
@@ -53,8 +51,9 @@ var GoogleBook = function (_React$Component) {
     }, {
         key: "dataList",
         value: function dataList() {
-            var arr = this.list.map(function (item) {
-                return React.createElement("option", { value: item });
+
+            var arr = this.list.map(function (item, index) {
+                return React.createElement("option", { key: index, value: item });
             });
             return React.createElement(
                 "datalist",
@@ -91,10 +90,11 @@ var GoogleBook = function (_React$Component) {
                 React.createElement(
                     "form",
                     { onSubmit: this.handleSubmit },
-                    React.createElement("input", { className: " bordernone w-50", type: "search", list: "list", value: this.state.input, onChange: this.handleChange, placeholder: "Search by book title or author", required: true }),
+                    React.createElement("input", { className: " bordernone w-50", type: "search", list: "list", value: this.state.input, onChange: this.handleChange, placeholder: "Search by book title or author", autoComplete: "on", required: true }),
                     this.dataList(),
                     React.createElement("input", { type: "submit", value: "Search", className: "button bordernone" })
                 ),
+                React.createElement("br", null),
                 spin,
                 React.createElement("br", null),
                 React.createElement("br", null),
@@ -125,10 +125,10 @@ var GoogleBook = function (_React$Component) {
                     throw Error("Error when fetching");
                 }
             }).then(function (myJson) {
-                var lists = [].concat(_toConsumableArray(_this2.state.list));
-                lists.push(_this2.state.input);
-                _this2.list.push(_this2.state.input);
-                _this2.setState({ items: myJson, list: lists });
+                if (!_this2.list.includes(_this2.state.input)) {
+                    _this2.list.push(_this2.state.input);
+                }
+                _this2.setState({ items: myJson });
                 if (myJson.totalItems == 0) {
                     _this2.wronginput = _this2.state.input;
                 }
@@ -177,7 +177,7 @@ var GoogleBook = function (_React$Component) {
             var arr = [];
 
             if (this.state.items.totalItems != 0 && this.state.items.totalItems !== undefined) {
-                arr = this.state.items.items.map(function (item) {
+                arr = this.state.items.items.map(function (item, index) {
                     var link = "";
                     if (item.volumeInfo.imageLinks !== undefined) {
                         link = item.volumeInfo.imageLinks.thumbnail;
@@ -186,20 +186,20 @@ var GoogleBook = function (_React$Component) {
                     }
                     return React.createElement(
                         "div",
-                        { className: "col-xs-12 col-md-6 border" },
+                        { key: item.volumeInfo.title + index, className: "col-xs-12 col-md-6 border" },
                         React.createElement(
                             "div",
                             { className: "row inher" },
                             React.createElement(
                                 "div",
                                 { className: "col-*-auto" },
-                                React.createElement("img", { className: "img-thumbnail", src: link, width: "128", height: "201" })
+                                React.createElement("img", { className: "img-thumbnail", src: link, width: "128", height: "201", alt: "book cover" })
                             ),
                             React.createElement(
                                 "div",
                                 { className: "col" },
                                 React.createElement(
-                                    "p",
+                                    "h6",
                                     null,
                                     item.volumeInfo.title
                                 ),
@@ -210,7 +210,7 @@ var GoogleBook = function (_React$Component) {
                                 ),
                                 React.createElement(
                                     "p",
-                                    { className: "author" },
+                                    { className: "publisher" },
                                     item.volumeInfo.publisher
                                 ),
                                 React.createElement(
@@ -219,7 +219,7 @@ var GoogleBook = function (_React$Component) {
                                     React.createElement(
                                         "a",
                                         { className: "button2", href: item.volumeInfo.infoLink },
-                                        "Click here"
+                                        "See this book"
                                     )
                                 )
                             )
