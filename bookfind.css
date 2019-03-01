@@ -29,7 +29,23 @@ html, body
 	color:#ffffff;
 }
 
+.white
+{
+	background-color:#ffffff;
+}
+
 .inher
 {
 	height:auto;
+}
+
+.author
+{
+	font-size:0.8rem;
+}
+
+.publisher
+{
+	font-size:0.8rem;
+	
 }
